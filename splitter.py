@@ -64,7 +64,8 @@ class splitter():
             end = args.dev_proportion + args.train_proportion
             end = int(np.floor(tasker.data.max_time.type(torch.float) * end))
             if args.task == 'link_pred':
-                dev = data_split(tasker, start, end, test = True, all_edges=True)
+                #dev = data_split(tasker, start, end, test = True, all_edges=True)
+                dev = data_split(tasker, start, end, test=True)
             else:
                 dev = data_split(tasker, start, end, test = True)
 
@@ -75,7 +76,8 @@ class splitter():
             #the +1 is because I assume that max_time exists in the dataset
             end = int(tasker.max_time) + 1
             if args.task == 'link_pred':
-                test = data_split(tasker, start, end, test = True, all_edges=True)
+                #test = data_split(tasker, start, end, test = True, all_edges=True)
+                test = data_split(tasker, start, end, test=True)
             else:
                 test = data_split(tasker, start, end, test = True)
                 
