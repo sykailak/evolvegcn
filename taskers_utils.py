@@ -177,15 +177,18 @@ def get_all_non_existing_edges(adj,tot_nodes):
     true_ids = adj['idx'].t().numpy()
     true_ids = get_edges_ids(true_ids,tot_nodes)
 
+    print('1')
+
     all_edges_idx = np.arange(tot_nodes)
+    print('2')
     all_edges_idx = np.array(np.meshgrid(all_edges_idx,
                                          all_edges_idx)).reshape(2,-1)
-
+    print('3')
     all_edges_ids = get_edges_ids(all_edges_idx,tot_nodes)
-
+    print('4')
     #only edges that are not in the true_ids should keep here
     mask = np.logical_not(np.isin(all_edges_ids,true_ids))
-
+    print('5')
     non_existing_edges_idx = all_edges_idx[:,mask]
     edges = torch.tensor(non_existing_edges_idx).t()
     vals = torch.zeros(edges.size(0), dtype = torch.long)
