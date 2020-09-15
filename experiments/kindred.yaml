@@ -2,7 +2,7 @@ data: sbm50
 
 sbm50_args:
   folder: /home/susuykim/data/
-  edges_file: tennis_1week_alladj.csv
+  edges_file: football_1week_alladj.csv
   aggr_time: 1 #
   feats_per_node: 3 #
 
