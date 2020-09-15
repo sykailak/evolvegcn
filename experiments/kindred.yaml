@@ -2,7 +2,7 @@ data: sbm50
 
 sbm50_args:
   folder: /home/susuykim/data/
-  edges_file: basketball_1week_alladj.csv
+  edges_file: tennis_1week_alladj.csv
   aggr_time: 1 #
   feats_per_node: 3 #
 
@@ -13,7 +13,7 @@ model: egcn_h
 
 task: link_pred
 
-class_weights: [ 0.1, 0.9]
+class_weights: [ 0.05, 0.95]
 use_2_hot_node_feats: False
 use_1_hot_node_feats: True
 save_node_embeddings: False
