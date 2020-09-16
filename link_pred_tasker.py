@@ -1,6 +1,24 @@
+#THIS IS NODE2VEC LINK PRED VERSION I’M USING
+
 import torch
 import taskers_utils as tu
 import utils as u
+
+from stellargraph import StellarGraph
+import pandas as pd
+
+from stellargraph.data import BiasedRandomWalk
+
+from gensim.models import Word2Vec
+import numpy as np
+
+import scipy.sparse as sp
+
+import logging
+
+logging.getLogger("gensim.models").setLevel(logging.WARNING)
+
+import time
 
 
 class Link_Pred_Tasker():
@@ -9,17 +27,19 @@ class Link_Pred_Tasker():
     task. It receives a dataset object which should have two attributes: nodes_feats and edges, this
     makes the tasker independent of the dataset being used (as long as mentioned attributes have the same
     structure).
+
     Based on the dataset it implements the get_sample function required by edge_cls_trainer.
     This is a dictionary with:
-        - time_step: the time_step of the prediction
-        - hist_adj_list: the input adjacency matrices until t, each element of the list
-                         is a sparse tensor with the current edges. For link_pred they're
-                         unweighted
-        - nodes_feats_list: the input nodes for the GCN models, each element of the list is a tensor
-                          two dimmensions: node_idx and node_feats
-        - label_adj: a sparse representation of the target edges. A dict with two keys: idx: M by 2
-                     matrix with the indices of the nodes conforming each edge, vals: 1 if the node exists
-                     , 0 if it doesn't
+      - time_step: the time_step of the prediction
+      - hist_adj_list: the input adjacency matrices until t, each element of the list
+               is a sparse tensor with the current edges. For link_pred they're
+               unweighted
+      - nodes_feats_list: the input nodes for the GCN models, each element of the list is a tensor
+                two dimmensions: node_idx and node_feats
+      - label_adj: a sparse representation of the target edges. A dict with two keys: idx: M by 2
+             matrix with the indices of the nodes conforming each edge, vals: 1 if the node exists
+             , 0 if it doesn't
+
     There's a test difference in the behavior, on test (or development), the number of sampled non existing
     edges should be higher.
     '''
@@ -34,41 +54,11 @@ class Link_Pred_Tasker():
         if not (args.use_2_hot_node_feats or args.use_1_hot_node_feats):
             self.feats_per_node = dataset.feats_per_node
 
-        self.get_node_feats = self.build_get_node_feats(args, dataset)
+        # self.get_node_feats = self.build_get_node_feats(args,dataset)
         self.prepare_node_feats = self.build_prepare_node_feats(args, dataset)
         self.is_static = False
 
-        '''TO CREATE THE CSV DATASET TO USE IN DynGEM
-        print ('min max time:', self.data.min_time, self.data.max_time)
-        file = open('data/autonomous_syst100_adj.csv','w')
-        file.write ('source,target,weight,time\n')
-        for time in range(self.data.min_time, self.data.max_time):
-            adj_t = tu.get_sp_adj(edges = self.data.edges,
-                       time = time,
-                       weighted = True,
-                       time_window = 1)
-            #node_feats = self.get_node_feats(adj_t)
-            print (time, len(adj_t))
-            idx = adj_t['idx']
-            vals = adj_t['vals']
-            num_nodes = self.data.num_nodes
-            sp_tensor = torch.sparse.FloatTensor(idx.t(),vals.type(torch.float),torch.Size([num_nodes,num_nodes]))
-            dense_tensor = sp_tensor.to_dense()
-            idx = sp_tensor._indices()
-            for i in range(idx.size()[1]):
-                i0=idx[0,i]
-                i1=idx[1,i]
-                w = dense_tensor[i0,i1]
-                file.write(str(i0.item())+','+str(i1.item())+','+str(w.item())+','+str(time)+'\n')
-            #for i, v in zip(idx, vals):
-            #	file.write(str(i[0].item())+','+str(i[1].item())+','+str(v.item())+','+str(time)+'\n')
-        file.close()
-        exit'''
-
-    # def build_get_non_existing(args):
-    # 	if args.use_smart_neg_sampling:
-    # 	else:
-    # 		return tu.get_non_existing_edges
+        self.all_node_feats_dic = self.build_get_node_feats(args, dataset)  ##should be a dic
 
     def build_prepare_node_feats(self, args, dataset):
         if args.use_2_hot_node_feats or args.use_1_hot_node_feats:
@@ -82,28 +72,99 @@ class Link_Pred_Tasker():
         return prepare_node_feats
 
     def build_get_node_feats(self, args, dataset):
-        if args.use_2_hot_node_feats:
-            max_deg_out, max_deg_in = tu.get_max_degs(args, dataset)
-            self.feats_per_node = max_deg_out + max_deg_in
+        self.feats_per_node = 128
 
-            def get_node_feats(adj):
-                return tu.get_2_hot_deg_feats(adj,
-                                              max_deg_out,
-                                              max_deg_in,
-                                              dataset.num_nodes)
-        elif args.use_1_hot_node_feats:
-            max_deg, _ = tu.get_max_degs(args, dataset)
-            self.feats_per_node = max_deg
+        def get_node_feats(adj):  # input is cur_adj
+            # start measuring time
+            # start = time.process_time()
 
-            def get_node_feats(adj):
-                return tu.get_1_hot_deg_feats(adj,
-                                              max_deg,
-                                              dataset.num_nodes)
-        else:
-            def get_node_feats(adj):
-                return dataset.nodes_feats
+            edgelist = adj['idx'].cpu().data.numpy()
+            source = edgelist[:, 0]
+            target = edgelist[:, 1]
+            weight = np.ones(len(source))
 
-        return get_node_feats
+            G = pd.DataFrame({'source': source, 'target': target, 'weight': weight})
+
+            G = StellarGraph(edges=G)
+
+            rw = BiasedRandomWalk(G)
+
+            weighted_walks = rw.run(
+                nodes=list(G.nodes()),  # root nodes
+                length=2,  # maximum length of a random walk
+                n=5,  # number of random walks per root node
+                p=1,  # Defines (unormalised) probability, 1/p, of returning to source node
+                q=0.5,  # Defines (unormalised) probability, 1/q, for moving away from source node
+                weighted=True,  # for weighted random walks
+                seed=42,  # random seed fixed for reproducibility
+            )
+
+            str_walks = [[str(n) for n in walk] for walk in weighted_walks]
+            # print('str_walks:',str_walks)
+
+            weighted_model = Word2Vec(str_walks, size=self.feats_per_node, window=5, min_count=0, sg=1, workers=1,
+                                      iter=1)
+
+            # Retrieve node embeddings and corresponding subjects
+            node_ids = weighted_model.wv.index2word  # list of node IDs
+            # change to integer
+            for i in range(0, len(node_ids)):
+                node_ids[i] = int(node_ids[i])
+
+            weighted_node_embeddings = (
+                weighted_model.wv.vectors)  # numpy.ndarray of size number of nodes times embeddings dimensionality
+
+            # print('weighted_node_embeddings shape:',weighted_node_embeddings.shape)
+
+            # print('node_ids:',node_ids)
+            # print('weighted_node_embeddings:',weighted_node_embeddings)
+            # print('node_ids[0]:',node_ids[0])
+            # print('first weighted_model.wv:',weighted_model.wv[str(node_ids[0])])
+
+            # create dic
+            dic = dict(zip(node_ids, weighted_node_embeddings.tolist()))
+            # ascending order
+            dic = dict(sorted(dic.items()))
+
+            # create matrix
+            adj_mat = sp.lil_matrix((self.data.num_nodes, self.feats_per_node))
+
+            for row_idx in node_ids:
+                adj_mat[row_idx, :] = dic[row_idx]
+
+            adj_mat = adj_mat.tocsr()
+            adj_mat = adj_mat.tocoo()
+
+            coords = np.vstack((adj_mat.row, adj_mat.col)).transpose()
+            values = adj_mat.data
+
+            row = list(coords[:, 0])
+            col = list(coords[:, 1])
+
+            indexx = torch.LongTensor([row, col])
+            tensor_size = torch.Size([self.data.num_nodes, self.feats_per_node])
+
+            degs_out = torch.sparse.FloatTensor(indexx, torch.FloatTensor(values), tensor_size)
+
+            hot_1 = {'idx': degs_out._indices().t(), 'vals': degs_out._values()}
+
+            # print(time.process_time() - start)
+
+            return hot_1
+
+        # create dic
+        feats_dic = {}
+
+        for i in range(self.data.max_time):
+            print('current i to make embeddings:', i)
+            cur_adj = tu.get_sp_adj(edges=self.data.edges,
+                                    time=i,
+                                    weighted=True,
+                                    time_window=self.args.adj_mat_time_window)
+
+            feats_dic[i] = get_node_feats(cur_adj)
+
+        return feats_dic
 
     def get_sample(self, idx, test, **kwargs):
         hist_adj_list = []
@@ -123,7 +184,9 @@ class Link_Pred_Tasker():
 
             node_mask = tu.get_node_mask(cur_adj, self.data.num_nodes)
 
-            node_feats = self.get_node_feats(cur_adj)
+            # node_feats = self.get_node_feats(cur_adj)
+
+            node_feats = self.all_node_feats_dic[i]
 
             cur_adj = tu.normalize_adj(adj=cur_adj, num_nodes=self.data.num_nodes)
 
@@ -154,8 +217,8 @@ class Link_Pred_Tasker():
                                                           existing_nodes=existing_nodes)
 
         # label_adj = tu.get_sp_adj_only_new(edges = self.data.edges,
-        # 								   weighted = False,
-        # 								   time = idx)
+        #                    weighted = False,
+        #                    time = idx)
 
         label_adj['idx'] = torch.cat([label_adj['idx'], non_exisiting_adj['idx']])
         label_adj['vals'] = torch.cat([label_adj['vals'], non_exisiting_adj['vals']])
@@ -164,3 +227,9 @@ class Link_Pred_Tasker():
                 'hist_ndFeats_list': hist_ndFeats_list,
                 'label_sp': label_adj,
                 'node_mask_list': hist_mask_list}
+
+
+
+
+
+
