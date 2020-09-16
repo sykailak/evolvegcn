@@ -2,14 +2,14 @@ data: sbm50
 
 sbm50_args:
   folder: /home/susuykim/data/
-  edges_file: tennis_1week_alladj.csv
+  edges_file: basketball_1week_alladj.csv
   aggr_time: 1 #
   feats_per_node: 3 #
 
 use_cuda: True
 use_logfile: False
 
-model: egcn_o
+model: egcn_h
 
 task: link_pred
 
