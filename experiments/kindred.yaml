@@ -9,7 +9,7 @@ sbm50_args:
 use_cuda: True
 use_logfile: False
 
-model: egcn_h
+model: egcn_o
 
 task: link_pred
 
