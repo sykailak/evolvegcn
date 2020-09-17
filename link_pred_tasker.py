@@ -54,6 +54,7 @@ class Link_Pred_Tasker():
         self.is_static = False
 
         # self.all_node_feats_dic = self.build_get_node_feats(args, dataset)  ##should be a dic
+
         read_dictionary = np.load('/home/susuykim/data/football_dict.npy', allow_pickle='TRUE').item()
         self.all_node_feats_dic = read_dictionary
 
@@ -128,6 +129,9 @@ class Link_Pred_Tasker():
 
         label_adj['idx'] = torch.cat([label_adj['idx'], non_exisiting_adj['idx']])
         label_adj['vals'] = torch.cat([label_adj['vals'], non_exisiting_adj['vals']])
+
+        print('hist_ndFeats_list[1] shape:',hist_ndFeats_list[1].shape)
+
         return {'idx': idx,
                 'hist_adj_list': hist_adj_list,
                 'hist_ndFeats_list': hist_ndFeats_list,
