@@ -54,7 +54,7 @@ class Link_Pred_Tasker():
         self.is_static = False
 
         # self.all_node_feats_dic = self.build_get_node_feats(args, dataset)  ##should be a dic
-        read_dictionary = np.load('/home/susuykim/data/dict.npy', allow_pickle='TRUE').item()
+        read_dictionary = np.load('/home/susuykim/data/football_dict.npy', allow_pickle='TRUE').item()
         self.all_node_feats_dic = read_dictionary
 
         # delete later
