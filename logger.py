@@ -4,7 +4,7 @@ import sys
 import datetime
 import torch
 import utils
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import time
 from sklearn.metrics import average_precision_score
 from scipy.sparse import coo_matrix
@@ -182,13 +182,13 @@ class Logger():
         for cl in range(self.num_classes):
             cl_precision, cl_recall, cl_f1 = self.calc_eval_measures_per_class(self.conf_mat_tp, self.conf_mat_fn, self.conf_mat_fp, cl)
             logging.info (self.set+' measures for class %d - precision %0.4f - recall %0.4f - f1 %0.4f ' % (cl,cl_precision,cl_recall,cl_f1))
-            if str(cl) == str(self.args.target_class):
-                if self.args.target_measure=='Precision' or self.args.target_measure=='prec':
-                    eval_measure = cl_precision
-                elif self.args.target_measure=='Recall' or self.args.target_measure=='rec':
-                    eval_measure = cl_recall
-                else:
-                    eval_measure = cl_f1
+            #if str(cl) == str(self.args.target_class):
+            #    if self.args.target_measure=='Precision' or self.args.target_measure=='prec':
+            #        eval_measure = cl_precision
+            #    elif self.args.target_measure=='Recall' or self.args.target_measure=='rec':
+            #        eval_measure = cl_recall
+            #    else:
+            #        eval_measure = cl_f1
 
         for k in self.eval_k_list: #logging.info(self.set+' @%d tp %s,fn %s,fp %s' % (k, self.conf_mat_tp_at_k[k], self.conf_mat_fn_at_k[k], self.conf_mat_fp_at_k[k]))
             precision, recall, f1 = self.calc_microavg_eval_measures(self.conf_mat_tp_at_k[k], self.conf_mat_fn_at_k[k], self.conf_mat_fp_at_k[k])
