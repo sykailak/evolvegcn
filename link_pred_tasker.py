@@ -12,32 +12,12 @@ import scipy.sparse as sp
 
 import logging
 
-
 import time
+
+import os
 
 
 class Link_Pred_Tasker():
-    '''
-    Creates a tasker object which computes the required inputs for training on a link prediction
-    task. It receives a dataset object which should have two attributes: nodes_feats and edges, this
-    makes the tasker independent of the dataset being used (as long as mentioned attributes have the same
-    structure).
-
-    Based on the dataset it implements the get_sample function required by edge_cls_trainer.
-    This is a dictionary with:
-      - time_step: the time_step of the prediction
-      - hist_adj_list: the input adjacency matrices until t, each element of the list
-               is a sparse tensor with the current edges. For link_pred they're
-               unweighted
-      - nodes_feats_list: the input nodes for the GCN models, each element of the list is a tensor
-                two dimmensions: node_idx and node_feats
-      - label_adj: a sparse representation of the target edges. A dict with two keys: idx: M by 2
-             matrix with the indices of the nodes conforming each edge, vals: 1 if the node exists
-             , 0 if it doesn't
-
-    There's a test difference in the behavior, on test (or development), the number of sampled non existing
-    edges should be higher.
-    '''
 
     def __init__(self, args, dataset):
         self.data = dataset
@@ -54,8 +34,8 @@ class Link_Pred_Tasker():
         self.is_static = False
 
         # self.all_node_feats_dic = self.build_get_node_feats(args, dataset)  ##should be a dic
-
-        read_dictionary = np.load('/home/susuykim/data/football_dict.npy', allow_pickle='TRUE').item()
+        file = os.path.join(args.sbm50_args['folder'], args.sbm50_args['dict_file'])
+        read_dictionary = np.load(file, allow_pickle='TRUE').item()
         self.all_node_feats_dic = read_dictionary
 
         # delete later
@@ -71,7 +51,6 @@ class Link_Pred_Tasker():
             prepare_node_feats = self.data.prepare_node_feats
 
         return prepare_node_feats
-
 
     def get_sample(self, idx, test, **kwargs):
         hist_adj_list = []
@@ -129,14 +108,12 @@ class Link_Pred_Tasker():
 
         label_adj['idx'] = torch.cat([label_adj['idx'], non_exisiting_adj['idx']])
         label_adj['vals'] = torch.cat([label_adj['vals'], non_exisiting_adj['vals']])
-
-        print('hist_ndFeats_list[1] shape:',hist_ndFeats_list[1].shape)
-
         return {'idx': idx,
                 'hist_adj_list': hist_adj_list,
                 'hist_ndFeats_list': hist_ndFeats_list,
                 'label_sp': label_adj,
                 'node_mask_list': hist_mask_list}
+
 
 
 
