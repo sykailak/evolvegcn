@@ -147,6 +147,7 @@ def create_parser():
                         help='optional, yaml file containing parameters to be used, overrides command line parameters')
     parser.add_argument('--sport', default='tennis', type=str)
     parser.add_argument('--adj_mat_time_window', default='1', type=int)
+    parser.add_argument('--num_hist_steps', default='5', type=int)
 
     return parser
 
@@ -155,6 +156,7 @@ def parse_args(parser):
     args = parser.parse_args()
     sport = args.sport
     adj_mat = args.adj_mat_time_window
+    num_hist = args.num_hist_steps
 
     if args.config_file:
         data = yaml.load(args.config_file)
@@ -168,6 +170,7 @@ def parse_args(parser):
     args.sbm50_args['dict_file'] = sport + '_dict.npy'
 
     args.adj_mat_time_window = adj_mat
+    args.num_hist_steps = num_hist
 
     args.learning_rate = random_param_value(args.learning_rate, args.learning_rate_min, args.learning_rate_max,
                                             type='logscale')
