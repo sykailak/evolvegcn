@@ -232,10 +232,12 @@ if __name__ == '__main__':
   #build a loss
   cross_entropy = ce.Cross_Entropy(args,dataset).to(args.device)
 
+  print('####################################')
   print('sport:',args.sbm50_args['dict_file'])
   print('adj_mat_time_window:',args.adj_mat_time_window)
   print('num_hist steps:',args.num_hist_steps)
-  
+  print('####################################')
+
   #trainer
   trainer = tr.Trainer(args,
              splitter = splitter,
