@@ -4,7 +4,6 @@ import sys
 import datetime
 import torch
 import utils
-import matplotlib.pyplot as plt
 import time
 from sklearn.metrics import average_precision_score
 from scipy.sparse import coo_matrix
