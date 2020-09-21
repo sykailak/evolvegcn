@@ -99,10 +99,16 @@ class Trainer():
 
         torch.set_grad_enabled(grad)
         for s in split:
-            if self.tasker.is_static:
-                s = self.prepare_static_sample(s)
-            else:
-                s = self.prepare_sample(s)
+
+            s = self.prepare_sample(s)
+
+            if self.args.sample:
+                num_sample = int(np.floor(s.label_sp['idx'].shape[1] * 0.03))
+                indice = random.sample(range(s.label_sp['idx'].shape[1]), num_sample)
+                indice = torch.tensor(indice)
+                s.label_sp['idx'] = s.label_sp['idx'][:, indice]
+                s.label_sp['vals'] = s.label_sp['vals'][indice]
+                #print('after sampling 0.1%:', len(s.label_sp['vals']))
 
             predictions, nodes_embs = self.predict(s.hist_adj_list,
                                                    s.hist_ndFeats_list,

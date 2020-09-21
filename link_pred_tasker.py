@@ -106,6 +106,24 @@ class Link_Pred_Tasker():
         #                    weighted = False,
         #                    time = idx)
 
+        if self.args.sbm50_args['dict_file']=='football_dict.npy':
+            #print('sampling football data...')
+            # Sampling label_adj
+            num_sample = int(np.floor(len(label_adj['vals'])*0.015))
+            indice = random.sample(range(len(label_adj['vals'])), num_sample)
+            indice = torch.LongTensor(indice)
+            label_adj['idx'] = label_adj['idx'][indice,:]
+            label_adj['vals'] = label_adj['vals'][indice]
+            #print('len(label_adj[vals]):',len(label_adj['vals']))
+
+            # Sampling non_exisiting_adj
+            num_sample = int(np.floor(len(non_exisiting_adj['vals'])*0.015))
+            indice = random.sample(range(len(non_exisiting_adj['vals'])), num_sample)
+            indice = torch.LongTensor(indice)
+            non_exisiting_adj['idx'] = non_exisiting_adj['idx'][indice,:]
+            non_exisiting_adj['vals'] = non_exisiting_adj['vals'][indice]
+            #print('len(non_exisiting_adj[vals]):',len(non_exisiting_adj['vals']))
+
         label_adj['idx'] = torch.cat([label_adj['idx'], non_exisiting_adj['idx']])
         label_adj['vals'] = torch.cat([label_adj['vals'], non_exisiting_adj['vals']])
         return {'idx': idx,

@@ -205,10 +205,16 @@ def get_non_existing_edges(adj,number, tot_nodes, smart_sampling, existing_nodes
         #existing_nodes = existing_nodes.numpy()
         def sample_edges(num_edges):
             # print('smart_sampling')
-            from_id = np.random.choice(idx[0],size = num_edges,replace = True)
-            to_id = np.random.choice(existing_nodes,size = num_edges, replace = True)
-            #print ('smart_sampling', from_id, to_id)
-            
+
+            if num_edges > 30000000:
+                #print('creating specific [fromNode, toNode] for football')
+                from_id = np.random.choice(175808, size=num_edges, replace=True)
+                to_id = np.random.choice(list(range(175808, 176168)), size=num_edges, replace=True)
+            else:
+                from_id = np.random.choice(idx[0], size=num_edges, replace=True)
+                to_id = np.random.choice(existing_nodes, size=num_edges, replace=True)
+
+
             if num_edges>1:
                 edges = np.stack([from_id,to_id])
             else:
