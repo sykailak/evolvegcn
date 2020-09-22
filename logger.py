@@ -93,10 +93,10 @@ class Logger():
     def log_minibatch(self, predictions, true_classes, loss, **kwargs):
 
         probs = torch.softmax(predictions,dim=1)[:,1]
-        if self.set in ['TEST', 'VALID'] and self.args.task == 'link_pred':
-            MRR = self.get_MRR(probs,true_classes, kwargs['adj'],do_softmax=False)
-        else:
-            MRR = torch.tensor([0.0])
+        #if self.set in ['TEST', 'VALID'] and self.args.task == 'link_pred':
+            #MRR = self.get_MRR(probs,true_classes, kwargs['adj'],do_softmax=False)
+        #else:
+            #MRR = torch.tensor([0.0])
 
         MAP = torch.tensor(self.get_MAP(probs,true_classes, do_softmax=False))
 
@@ -110,7 +110,7 @@ class Logger():
 
         self.losses.append(loss) #loss.detach()
         self.errors.append(error)
-        self.MRRs.append(MRR)
+        #self.MRRs.append(MRR)
         self.MAPs.append(MAP)
         for cl in range(self.num_classes):
             self.conf_mat_tp[cl]+=conf_mat_per_class.true_positives[cl]
@@ -128,10 +128,10 @@ class Logger():
         self.minibatch_done+=1
         if self.minibatch_done%self.minibatch_log_interval==0:
             mb_error = self.calc_epoch_metric(self.batch_sizes, self.errors)
-            mb_MRR = self.calc_epoch_metric(self.batch_sizes, self.MRRs)
+            #mb_MRR = self.calc_epoch_metric(self.batch_sizes, self.MRRs)
             mb_MAP = self.calc_epoch_metric(self.batch_sizes, self.MAPs)
             partial_losses = torch.stack(self.losses)
-            logging.info(self.set+ ' batch %d / %d - partial error %0.4f - partial loss %0.4f - partial MRR  %0.4f - partial MAP %0.4f' % (self.minibatch_done, self.num_minibatches, mb_error, partial_losses.mean(), mb_MRR, mb_MAP))
+            #logging.info(self.set+ ' batch %d / %d - partial error %0.4f - partial loss %0.4f - partial MRR  %0.4f - partial MAP %0.4f' % (self.minibatch_done, self.num_minibatches, mb_error, partial_losses.mean(), mb_MRR, mb_MAP))
 
             tp=conf_mat_per_class.true_positives
             fn=conf_mat_per_class.false_negatives
@@ -158,11 +158,11 @@ class Logger():
         epoch_error = self.calc_epoch_metric(self.batch_sizes, self.errors)
         logging.info(self.set+' mean errors '+ str(epoch_error))
 
-        epoch_MRR = self.calc_epoch_metric(self.batch_sizes, self.MRRs)
+        #epoch_MRR = self.calc_epoch_metric(self.batch_sizes, self.MRRs)
         epoch_MAP = self.calc_epoch_metric(self.batch_sizes, self.MAPs)
-        logging.info(self.set+' mean MRR '+ str(epoch_MRR)+' - mean MAP '+ str(epoch_MAP))
-        if self.args.target_measure=='MRR' or self.args.target_measure=='mrr':
-            eval_measure = epoch_MRR
+        logging.info(self.set+' - mean MAP '+ str(epoch_MAP))
+        #if self.args.target_measure=='MRR' or self.args.target_measure=='mrr':
+        #    eval_measure = epoch_MRR
         if self.args.target_measure=='MAP' or self.args.target_measure=='map':
             eval_measure = epoch_MAP
 
