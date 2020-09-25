@@ -109,7 +109,7 @@ class Link_Pred_Tasker():
         if self.args.sbm50_args['dict_file']=='football_dict.npy':
             #print('sampling football data...')
             # Sampling label_adj
-            num_sample = int(np.floor(len(label_adj['vals'])*0.025))
+            num_sample = int(np.floor(len(label_adj['vals'])*0.02))
             indice = random.sample(range(len(label_adj['vals'])), num_sample)
             indice = torch.LongTensor(indice)
             label_adj['idx'] = label_adj['idx'][indice,:]
@@ -117,7 +117,7 @@ class Link_Pred_Tasker():
             #print('len(label_adj[vals]):',len(label_adj['vals']))
 
             # Sampling non_exisiting_adj
-            num_sample = int(np.floor(len(non_exisiting_adj['vals'])*0.025))
+            num_sample = int(np.floor(len(non_exisiting_adj['vals'])*0.02))
             indice = random.sample(range(len(non_exisiting_adj['vals'])), num_sample)
             indice = torch.LongTensor(indice)
             non_exisiting_adj['idx'] = non_exisiting_adj['idx'][indice,:]
