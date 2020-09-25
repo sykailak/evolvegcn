@@ -124,13 +124,18 @@ class Link_Pred_Tasker():
             non_exisiting_adj['vals'] = non_exisiting_adj['vals'][indice]
             #print('len(non_exisiting_adj[vals]):',len(non_exisiting_adj['vals']))
 
+        all_len = len(label_adj['vals']) + len(non_exisiting_adj['vals'])
+        pos = len(label_adj['vals'])/all_len
+        neg = len(non_exisiting_adj['vals'])/all_len
+
         label_adj['idx'] = torch.cat([label_adj['idx'], non_exisiting_adj['idx']])
         label_adj['vals'] = torch.cat([label_adj['vals'], non_exisiting_adj['vals']])
         return {'idx': idx,
                 'hist_adj_list': hist_adj_list,
                 'hist_ndFeats_list': hist_ndFeats_list,
                 'label_sp': label_adj,
-                'node_mask_list': hist_mask_list}
+                'node_mask_list': hist_mask_list,
+                'weight': [pos, neg]}
 
 
 

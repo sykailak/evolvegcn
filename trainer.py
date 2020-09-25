@@ -116,7 +116,7 @@ class Trainer():
                                                    s.label_sp['idx'],
                                                    s.node_mask_list)
 
-            loss = self.comp_loss(predictions, s.label_sp['vals'])
+            loss = self.comp_loss(predictions, s.label_sp['vals'],s.weight)
             # print(loss)
             if set_name in ['TEST', 'VALID'] and self.args.task == 'link_pred':
                 self.logger.log_minibatch(predictions, s.label_sp['vals'], loss.detach(), adj=s.label_sp['idx'])
