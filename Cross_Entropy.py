@@ -37,16 +37,17 @@ class Cross_Entropy(torch.nn.Module):
         sum_exp = torch.sum(torch.exp(logits-m),dim=1, keepdim=True)
         return m + torch.log(sum_exp)
     
-    def forward(self,logits,labels,weights):
+    def forward(self,logits,labels,weights_):
     #def forward(self,logits,labels)
         '''
         logits is a matrix M by C where m is the number of classifications and C are the number of classes
         labels is a integer tensor of size M where each element corresponds to the class that prediction i
         should be matching to
         '''
+
+        weights = torch.tensor(weights_).to('cuda')
         labels = labels.view(-1,1)
-        alpha = weights(labels)[labels].view(-1,1)
-        #alpha = self.weights(labels)[labels].view(-1,1)
+        alpha = weights[labels].view(-1,1)
         loss = alpha * (- logits.gather(-1,labels) + self.logsumexp(logits))
         return loss.mean()
 
