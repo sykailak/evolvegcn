@@ -106,7 +106,7 @@ class Link_Pred_Tasker():
         #                    weighted = False,
         #                    time = idx)
 
-        if self.args.sbm50_args['dict_file']=='tennis_dict.npy':
+        if self.args.sbm50_args['dict_file']=='football_dict.npy':
             #print('sampling football data...')
             # Sampling label_adj
             num_sample = int(np.floor(len(label_adj['vals'])*0.02))
