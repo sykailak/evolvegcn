@@ -134,6 +134,8 @@ def create_parser():
     parser.add_argument('--sample', dest='sample',action='store_true')
     parser.add_argument('--nosample', dest='sample',action='store_false')
     parser.add_argument('--comment', default='none', type=str)
+    parser.add_argument('--adaptive', dest='adapt',action='store_true')
+    parser.add_argument('--noadaptive', dest='adapt',action='store_false')
 
     return parser
 
@@ -144,7 +146,7 @@ def parse_args(parser):
     num_hist = args.num_hist_steps
     sample = args.sample
     comment = args.comment
-
+    adapt = args.adapt
 
     if args.config_file:
         data = yaml.load(args.config_file)
@@ -161,6 +163,7 @@ def parse_args(parser):
     args.num_hist_steps = num_hist
     args.sample = sample
     args.comment = comment
+    args.adapt = adapt
 
     args.learning_rate =random_param_value(args.learning_rate, args.learning_rate_min, args.learning_rate_max, type='logscale')
     # args.adj_mat_time_window = random_param_value(args.adj_mat_time_window, args.adj_mat_time_window_min, args.adj_mat_time_window_max, type='int')
