@@ -14,7 +14,7 @@ model: egcn_h
 
 task: link_pred
 
-class_weights: [0.1, 0.9]
+class_weights: [0.9, 0.1] #[0.1, 0.9]
 use_2_hot_node_feats: False
 use_1_hot_node_feats: True
 save_node_embeddings: False
