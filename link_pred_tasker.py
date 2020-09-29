@@ -129,9 +129,9 @@ class Link_Pred_Tasker():
         neg = len(non_exisiting_adj['vals'])/all_len
 
         if self.args.adapt:
-          weight = [pos,neg]
+          weight = [neg,pos]
         else:
-          weight = [0.1,0.9]
+          weight = [0.9,0.1]
 
         label_adj['idx'] = torch.cat([label_adj['idx'], non_exisiting_adj['idx']])
         label_adj['vals'] = torch.cat([label_adj['vals'], non_exisiting_adj['vals']])
