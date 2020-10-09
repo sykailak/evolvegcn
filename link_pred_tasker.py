@@ -131,7 +131,7 @@ class Link_Pred_Tasker():
         if self.args.adapt:
           weight = [pos,neg]
         else:
-          weight = [0.1,0.9]
+          weight = self.args.class_weights
 
         label_adj['idx'] = torch.cat([label_adj['idx'], non_exisiting_adj['idx']])
         label_adj['vals'] = torch.cat([label_adj['vals'], non_exisiting_adj['vals']])

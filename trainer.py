@@ -132,9 +132,12 @@ class Trainer():
         return eval_measure, nodes_embs
 
     def predict(self, hist_adj_list, hist_ndFeats_list, node_indices, mask_list):
-        nodes_embs = self.gcn(hist_adj_list,
-                              hist_ndFeats_list,
-                              mask_list)
+        #nodes_embs = self.gcn(hist_adj_list,
+        #                      hist_ndFeats_list,
+        #                      mask_list)
+
+        nodes_embs = hist_ndFeats_list[-1].to_dense()
+
         predict_batch_size = 100000
         gather_predictions = []
         for i in range(1 + (node_indices.size(1) // predict_batch_size)):
