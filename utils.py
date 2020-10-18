@@ -144,6 +144,8 @@ def parse_args(parser):
     sport = args.sport
     adj_mat = args.adj_mat_time_window
     num_hist = args.num_hist_steps
+    if args.model == 'gcn':
+        num_hist = 0
     sample = args.sample
     comment = args.comment
     adapt = args.adapt
