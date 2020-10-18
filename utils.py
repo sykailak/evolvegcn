@@ -144,8 +144,6 @@ def parse_args(parser):
     sport = args.sport
     adj_mat = args.adj_mat_time_window
     num_hist = args.num_hist_steps
-    if args.model == 'gcn':
-        num_hist = 0
     sample = args.sample
     comment = args.comment
     adapt = args.adapt
@@ -161,8 +159,11 @@ def parse_args(parser):
     args.sbm50_args['edges_file'] = sport + '_1week_alladj.csv'
     args.sbm50_args['dict_file'] = sport + '_dict.npy'
 
+
     args.adj_mat_time_window = adj_mat
     args.num_hist_steps = num_hist
+    if args.model == 'gcn':
+        args.num_hist_steps = 0
     args.sample = sample
     args.comment = comment
     args.adapt = adapt
