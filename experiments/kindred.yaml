@@ -10,7 +10,7 @@ sbm50_args:
 use_cuda: True
 use_logfile: False
 
-model: gcn #egcn_h
+model: egcn_h #gcn
 
 task: link_pred
 

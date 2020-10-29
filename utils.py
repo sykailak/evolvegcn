@@ -136,6 +136,8 @@ def create_parser():
     parser.add_argument('--comment', default='none', type=str)
     parser.add_argument('--adaptive', dest='adapt',action='store_true')
     parser.add_argument('--noadaptive', dest='adapt',action='store_false')
+    parser.add_argument('--model', default='egcn_h', type=str)
+
 
     return parser
 
@@ -147,6 +149,7 @@ def parse_args(parser):
     sample = args.sample
     comment = args.comment
     adapt = args.adapt
+    model = args.model
 
     if args.config_file:
         data = yaml.load(args.config_file)
@@ -162,6 +165,7 @@ def parse_args(parser):
 
     args.adj_mat_time_window = adj_mat
     args.num_hist_steps = num_hist
+    args.model = model
     if args.model == 'gcn':
         args.num_hist_steps = 0
     args.sample = sample
