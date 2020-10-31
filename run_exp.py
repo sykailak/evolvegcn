@@ -105,7 +105,8 @@ def build_gcn(args,tasker):
   gcn_args = u.Namespace(args.gcn_parameters)
   gcn_args.feats_per_node = tasker.feats_per_node
   if args.model == 'gcn':
-    return mls.Sp_GCN(gcn_args,activation = torch.nn.RReLU()).to(args.device)
+    #return mls.Sp_GCN(gcn_args,activation = torch.nn.RReLU()).to(args.device)
+    return mls.Sp_Skip_NodeFeats_GCN(gcn_args,activation = torch.nn.RReLU()).to(args.device)
   else:
     assert args.num_hist_steps > 0, 'more than one step is necessary to train LSTM'
     if args.model == 'egcn':
