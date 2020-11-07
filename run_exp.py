@@ -6,33 +6,23 @@ import time
 import random
 
 #datasets
-#import bitcoin_dl as bc
-#import elliptic_temporal_dl as ell_temp
-#import uc_irv_mess_dl as ucim
-#import auto_syst_dl as aus
 import sbm_dl as sbm
-#import reddit_dl as rdt
-
 
 #taskers
 import link_pred_tasker as lpt
-#import edge_cls_tasker as ect
-#import node_cls_tasker as nct
 
 #models
 import models as mls
 import egcn_h
-#import egcn_o
 
-
+#others
 import splitter as sp
 import Cross_Entropy as ce
-
 import trainer as tr
-
 import logger
 import logging
 
+#handling the log message
 logging.getLogger("gensim.models").setLevel(logging.WARNING)
 
 
@@ -49,31 +39,11 @@ def random_param_value(param, param_min, param_max, type='int'):
     return param
 
 def build_random_hyper_params(args):
-  if args.model == 'all':
-    model_types = ['gcn', 'egcn_o', 'egcn_h', 'gruA', 'gruB','egcn','lstmA', 'lstmB']
-    args.model=model_types[args.rank]
-  elif args.model == 'all_nogcn':
-    model_types = ['egcn_o', 'egcn_h', 'gruA', 'gruB','egcn','lstmA', 'lstmB']
-    args.model=model_types[args.rank]
-  elif args.model == 'all_noegcn3':
-    model_types = ['gcn', 'egcn_h', 'gruA', 'gruB','egcn','lstmA', 'lstmB']
-    args.model=model_types[args.rank]
-  elif args.model == 'all_nogruA':
-    model_types = ['gcn', 'egcn_o', 'egcn_h', 'gruB','egcn','lstmA', 'lstmB']
-    args.model=model_types[args.rank]
-    args.model=model_types[args.rank]
-  elif args.model == 'saveembs':
+  if args.model == 'saveembs':
     model_types = ['gcn', 'gcn', 'skipgcn', 'skipgcn']
     args.model=model_types[args.rank]
 
   args.learning_rate =random_param_value(args.learning_rate, args.learning_rate_min, args.learning_rate_max, type='logscale')
-  # args.adj_mat_time_window = random_param_value(args.adj_mat_time_window, args.adj_mat_time_window_min, args.adj_mat_time_window_max, type='int')
-
-  #if args.model == 'gcn':
-  #  args.num_hist_steps = 0
-  #else:
-  #  args.num_hist_steps = random_param_value(args.num_hist_steps, args.num_hist_steps_min, args.num_hist_steps_max, type='int')
-
   args.gcn_parameters['feats_per_node'] =random_param_value(args.gcn_parameters['feats_per_node'], args.gcn_parameters['feats_per_node_min'], args.gcn_parameters['feats_per_node_max'], type='int')
   args.gcn_parameters['layer_1_feats'] =random_param_value(args.gcn_parameters['layer_1_feats'], args.gcn_parameters['layer_1_feats_min'], args.gcn_parameters['layer_1_feats_max'], type='int')
   if args.gcn_parameters['layer_2_feats_same_as_l1'] or args.gcn_parameters['layer_2_feats_same_as_l1'].lower()=='true':
@@ -182,6 +152,7 @@ if __name__ == '__main__':
   classifier = build_classifier(args,tasker)
   #build a loss
   cross_entropy = ce.Cross_Entropy(args,dataset).to(args.device)
+
 
   print('####################################')
   print('sport:',args.sbm50_args['dict_file'])

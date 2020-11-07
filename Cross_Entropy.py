@@ -7,25 +7,10 @@ class Cross_Entropy(torch.nn.Module):
         super().__init__()
         weights = torch.tensor(args.class_weights).to(args.device)
 
-        self.weights = self.dyn_scale(args.task, dataset, weights)
+        self.weights = self.dyn_scale(args.task, dataset, weights)  #however not used
         
     
-    def dyn_scale(self,task,dataset,weights):
-        # if task == 'link_pred':  commented to have a 1:1 ratio
-
-        #     '''
-        #     when doing link prediction there is an extra weighting factor on the non-existing
-        #     edges
-        #     '''
-        #     tot_neg = dataset.num_non_existing
-        #     def scale(labels):
-        #         cur_neg = (labels == 0).sum(dtype = torch.float)
-        #         out = weights.clone()
-        #         out[0] *= tot_neg/cur_neg
-        #         return out
-        # else:
-        #     def scale(labels):
-        #         return weights
+    def dyn_scale(self,task,dataset,weights): #however not used
         def scale(labels):
             return weights
         return scale
@@ -38,13 +23,11 @@ class Cross_Entropy(torch.nn.Module):
         return m + torch.log(sum_exp)
     
     def forward(self,logits,labels,weights_):
-    #def forward(self,logits,labels)
         '''
         logits is a matrix M by C where m is the number of classifications and C are the number of classes
         labels is a integer tensor of size M where each element corresponds to the class that prediction i
         should be matching to
         '''
-
         weights = torch.tensor(weights_).to('cuda')
         labels = labels.view(-1,1)
         alpha = weights[labels].view(-1,1)

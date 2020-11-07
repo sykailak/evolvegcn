@@ -131,14 +131,10 @@ def create_parser():
     parser.add_argument('--sport', default='tennis', type=str)
     parser.add_argument('--adj_mat_time_window', default='1', type=int)
     parser.add_argument('--num_hist_steps', default='5', type=int)
-    parser.add_argument('--sample', dest='sample',action='store_true')
-    parser.add_argument('--nosample', dest='sample',action='store_false')
     parser.add_argument('--comment', default='none', type=str)
     parser.add_argument('--adaptive', dest='adapt',action='store_true')
     parser.add_argument('--noadaptive', dest='adapt',action='store_false')
     parser.add_argument('--model', default='egcn_h', type=str)
-
-
     return parser
 
 def parse_args(parser):
@@ -146,7 +142,6 @@ def parse_args(parser):
     sport = args.sport
     adj_mat = args.adj_mat_time_window
     num_hist = args.num_hist_steps
-    sample = args.sample
     comment = args.comment
     adapt = args.adapt
     model = args.model
@@ -168,7 +163,6 @@ def parse_args(parser):
     args.model = model
     if args.model == 'gcn':
         args.num_hist_steps = 0
-    args.sample = sample
     args.comment = comment
     args.adapt = adapt
 

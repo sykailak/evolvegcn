@@ -29,11 +29,9 @@ class Link_Pred_Tasker():
         if not (args.use_2_hot_node_feats or args.use_1_hot_node_feats):
             self.feats_per_node = dataset.feats_per_node
 
-        # self.get_node_feats = self.build_get_node_feats(args,dataset)
-        self.prepare_node_feats = self.build_prepare_node_feats(args, dataset)
+        #self.prepare_node_feats = self.build_prepare_node_feats(args, dataset)
         self.is_static = False
 
-        # self.all_node_feats_dic = self.build_get_node_feats(args, dataset)  ##should be a dic
         file = os.path.join(args.sbm50_args['folder'], args.sbm50_args['dict_file'])
         read_dictionary = np.load(file, allow_pickle='TRUE').item()
         self.all_node_feats_dic = read_dictionary
@@ -41,7 +39,7 @@ class Link_Pred_Tasker():
         # delete later
         self.feats_per_node = 100
 
-    def build_prepare_node_feats(self, args, dataset):
+    def build_prepare_node_feats(self, args, dataset): #not used
         if args.use_2_hot_node_feats or args.use_1_hot_node_feats:
             def prepare_node_feats(node_feats):
                 return u.sparse_prepare_tensor(node_feats,
@@ -102,12 +100,9 @@ class Link_Pred_Tasker():
                                                           smart_sampling=self.args.smart_neg_sampling,
                                                           existing_nodes=existing_nodes)
 
-        # label_adj = tu.get_sp_adj_only_new(edges = self.data.edges,
-        #                    weighted = False,
-        #                    time = idx)
 
+        # For football data, we need to sample due to memory constraints
         if self.args.sbm50_args['dict_file']=='football_dict.npy':
-            #print('sampling football data...')
             # Sampling label_adj
             num_sample = int(np.floor(len(label_adj['vals'])*0.02))
             indice = random.sample(range(len(label_adj['vals'])), num_sample)
@@ -128,6 +123,7 @@ class Link_Pred_Tasker():
         pos = len(label_adj['vals'])/all_len
         neg = len(non_exisiting_adj['vals'])/all_len
 
+        # if adapt, we use EXACT adaptive weights when contributing to the loss
         if self.args.adapt:
           weight = [pos,neg]
         else:

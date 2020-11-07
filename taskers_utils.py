@@ -8,28 +8,6 @@ ECOLS = u.Namespace({'source': 0,
                      'time': 2,
                      'label':3}) #--> added for edge_cls
 
-# def get_2_hot_deg_feats(adj,max_deg_out,max_deg_in,num_nodes):
-#     #For now it'll just return a 2-hot vector
-#     adj['vals'] = torch.ones(adj['idx'].size(0))
-#     degs_out, degs_in = get_degree_vects(adj,num_nodes)
-    
-#     degs_out = {'idx': torch.cat([torch.arange(num_nodes).view(-1,1),
-#                                   degs_out.view(-1,1)],dim=1),
-#                 'vals': torch.ones(num_nodes)}
-    
-#     # print ('XXX degs_out',degs_out['idx'].size(),degs_out['vals'].size())
-#     degs_out = u.make_sparse_tensor(degs_out,'long',[num_nodes,max_deg_out])
-
-#     degs_in = {'idx': torch.cat([torch.arange(num_nodes).view(-1,1),
-#                                   degs_in.view(-1,1)],dim=1),
-#                 'vals': torch.ones(num_nodes)}
-#     degs_in = u.make_sparse_tensor(degs_in,'long',[num_nodes,max_deg_in])
-
-#     hot_2 = torch.cat([degs_out,degs_in],dim = 1)
-#     hot_2 = {'idx': hot_2._indices().t(),
-#              'vals': hot_2._values()}
-
-#     return hot_2
 
 def get_1_hot_deg_feats(adj,max_deg,num_nodes):
     #For now it'll just return a 2-hot vector
