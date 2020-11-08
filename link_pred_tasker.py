@@ -1,20 +1,18 @@
-# THIS IS NODE2VEC LINK PRED WITH IMPORTED DICTIONARY
 
 import torch
 import taskers_utils as tu
 import utils as u
 
+from stellargraph import StellarGraph
 import pandas as pd
-
+from stellargraph.data import BiasedRandomWalk
+from gensim.models import Word2Vec
 import numpy as np
-
 import scipy.sparse as sp
-
 import logging
-
+logging.getLogger("gensim.models").setLevel(logging.WARNING)
 import time
-import random
-import os
+
 
 
 class Link_Pred_Tasker():
@@ -29,17 +27,28 @@ class Link_Pred_Tasker():
         if not (args.use_2_hot_node_feats or args.use_1_hot_node_feats):
             self.feats_per_node = dataset.feats_per_node
 
-        #self.prepare_node_feats = self.build_prepare_node_feats(args, dataset)
+        self.prepare_node_feats = self.build_prepare_node_feats(args, dataset)
         self.is_static = False
 
         #file = os.path.join(args.sbm50_args['folder'], args.sbm50_args['dict_file'])
         #read_dictionary = np.load(file, allow_pickle='TRUE').item()
         #self.all_node_feats_dic = read_dictionary
 
+        self.feats_per_node = 100
         self.all_node_feats_dic = self.build_get_node_feats(args, dataset)  ##should be a dic
 
 
-        self.feats_per_node = 100
+    def build_prepare_node_feats(self, args, dataset):
+        if args.use_2_hot_node_feats or args.use_1_hot_node_feats:
+            def prepare_node_feats(node_feats):
+                return u.sparse_prepare_tensor(node_feats,
+                                               torch_size=[dataset.num_nodes,
+                                                           self.feats_per_node])
+        else:
+            prepare_node_feats = self.data.prepare_node_feats
+
+        return prepare_node_feats
+
 
     def build_get_node_feats(self, args, dataset):
 
@@ -83,12 +92,6 @@ class Link_Pred_Tasker():
             weighted_node_embeddings = (
                 weighted_model.wv.vectors)  # numpy.ndarray of size number of nodes times embeddings dimensionality
 
-            # print('weighted_node_embeddings shape:',weighted_node_embeddings.shape)
-
-            # print('node_ids:',node_ids)
-            # print('weighted_node_embeddings:',weighted_node_embeddings)
-            # print('node_ids[0]:',node_ids[0])
-            # print('first weighted_model.wv:',weighted_model.wv[str(node_ids[0])])
 
             # create dic
             dic = dict(zip(node_ids, weighted_node_embeddings.tolist()))
@@ -125,7 +128,8 @@ class Link_Pred_Tasker():
         feats_dic = {}
 
         for i in range(self.data.max_time):
-            print('current i to make embeddings:', i)
+            if i%30 == 0:
+              print('current i to make embeddings:', i)
             cur_adj = tu.get_sp_adj(edges=self.data.edges,
                                     time=i,
                                     weighted=True,
@@ -153,9 +157,8 @@ class Link_Pred_Tasker():
 
             node_mask = tu.get_node_mask(cur_adj, self.data.num_nodes)
 
-            # node_feats = self.get_node_feats(cur_adj)
 
-            # get node features from the imported dictionary (already created)
+            # get node features from the dictionary (already created)
             node_feats = self.all_node_feats_dic[i]
 
 

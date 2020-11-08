@@ -4,8 +4,8 @@ import argparse
 
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
-parser.add_argument('--data_path',default='/content/drive/My Drive/UCLdissertation/rec_bet_events 2.csv', type=argparse.FileType(mode='r'))
-parser.add_argument('--save_path',default='/content/drive/My Drive/KindredEvolve/icehockey_1week_alladj.csv', type=argparse.FileType(mode='r'))
+parser.add_argument('--data_path', type=argparse.FileType(mode='r'))
+parser.add_argument('--save_path', type=str)
 parser.add_argument('--sport', default='tennis', type=str)
 args = parser.parse_args()
 
@@ -87,3 +87,6 @@ all_adj = all_adj.drop_duplicates()
 
 # save the final df
 all_adj.to_csv(args.save_path,index=False)
+
+
+
