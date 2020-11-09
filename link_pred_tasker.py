@@ -53,8 +53,6 @@ class Link_Pred_Tasker():
     def build_get_node_feats(self, args, dataset):
 
         def get_node_feats(adj):  # input is cur_adj
-            # start measuring time
-            # start = time.process_time()
 
             edgelist = adj['idx'].cpu().data.numpy()
             source = edgelist[:, 0]
@@ -62,9 +60,7 @@ class Link_Pred_Tasker():
             weight = np.ones(len(source))
 
             G = pd.DataFrame({'source': source, 'target': target, 'weight': weight})
-
             G = StellarGraph(edges=G)
-
             rw = BiasedRandomWalk(G)
 
             weighted_walks = rw.run(
@@ -78,8 +74,6 @@ class Link_Pred_Tasker():
             )
 
             str_walks = [[str(n) for n in walk] for walk in weighted_walks]
-            # print('str_walks:',str_walks)
-
             weighted_model = Word2Vec(str_walks, size=self.feats_per_node, window=5, min_count=0, sg=1, workers=1,
                                       iter=1)
 
@@ -92,12 +86,10 @@ class Link_Pred_Tasker():
             weighted_node_embeddings = (
                 weighted_model.wv.vectors)  # numpy.ndarray of size number of nodes times embeddings dimensionality
 
-
             # create dic
             dic = dict(zip(node_ids, weighted_node_embeddings.tolist()))
             # ascending order
             dic = dict(sorted(dic.items()))
-
             # create matrix
             adj_mat = sp.lil_matrix((self.data.num_nodes, self.feats_per_node))
 
@@ -106,21 +98,14 @@ class Link_Pred_Tasker():
 
             adj_mat = adj_mat.tocsr()
             adj_mat = adj_mat.tocoo()
-
             coords = np.vstack((adj_mat.row, adj_mat.col)).transpose()
             values = adj_mat.data
-
             row = list(coords[:, 0])
             col = list(coords[:, 1])
-
             indexx = torch.LongTensor([row, col])
             tensor_size = torch.Size([self.data.num_nodes, self.feats_per_node])
-
             degs_out = torch.sparse.FloatTensor(indexx, torch.FloatTensor(values), tensor_size)
-
             hot_1 = {'idx': degs_out._indices().t(), 'vals': degs_out._values()}
-
-            # print(time.process_time() - start)
 
             return hot_1
 
@@ -157,10 +142,8 @@ class Link_Pred_Tasker():
 
             node_mask = tu.get_node_mask(cur_adj, self.data.num_nodes)
 
-
             # get node features from the dictionary (already created)
             node_feats = self.all_node_feats_dic[i]
-
 
             cur_adj = tu.normalize_adj(adj=cur_adj, num_nodes=self.data.num_nodes)
 
@@ -188,11 +171,12 @@ class Link_Pred_Tasker():
                                                           number=label_adj['vals'].size(0) * neg_mult,
                                                           tot_nodes=self.data.num_nodes,
                                                           smart_sampling=self.args.smart_neg_sampling,
-                                                          existing_nodes=existing_nodes)
+                                                          existing_nodes=existing_nodes,
+                                                          sport = self.args.sport)
 
 
         # For football data, we need to sample due to memory constraints
-        if self.args.sbm50_args['dict_file']=='football_dict.npy':
+        if self.args.sport=='football':
             # Sampling label_adj
             num_sample = int(np.floor(len(label_adj['vals'])*0.02))
             indice = random.sample(range(len(label_adj['vals'])), num_sample)
