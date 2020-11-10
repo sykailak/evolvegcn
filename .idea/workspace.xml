@@ -3,7 +3,25 @@
   <component name="ChangeListManager">
     <list default="true" id="9c187b02-9b85-4d23-b555-e67791160b95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_auto_syst_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_auto_syst_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_alpha_edgecls_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_alpha_edgecls_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_alpha_linkpred_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_alpha_linkpred_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_otc_edgecls_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_otc_edgecls_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_otc_linkpred_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_bitcoin_otc_linkpred_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_elliptic_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_elliptic_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_example.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_reddit_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_reddit_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_sbm_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_sbm_egcn_o.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_uc_irv_mess_egcn_h.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/parameters_uc_irv_mess_egcn_o.yaml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
