@@ -58,7 +58,7 @@ class sbm_dataset():
         return num_nodes
 
     def load_edges(self,sbm_args, starting_line = 1):
-        file = sbm_args.edge_file #os.path.join(sbm_args.folder,sbm_args.edges_file)
+        file = sbm_args.edges_file #os.path.join(sbm_args.folder,sbm_args.edges_file)
         with open(file) as f:
             lines = f.read().splitlines()
         edges = [[float(r) for r in row.split(',')] for row in lines[starting_line:]]
