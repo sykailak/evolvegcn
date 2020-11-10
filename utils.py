@@ -21,7 +21,6 @@ def pad_with_last_val(vect,k):
     return vect
 
 
-
 def sparse_prepare_tensor(tensor,torch_size, ignore_batch_dim = True):
     if ignore_batch_dim:
         tensor = sp_ignore_batch_dim(tensor)
@@ -91,7 +90,6 @@ def set_seeds(rank):
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
-
 def random_param_value(param, param_min, param_max, type='int'):
     if str(param) is None or str(param).lower()=='none':
         if type=='int':
@@ -122,7 +120,6 @@ def load_data_from_tar(file, tar_archive, replace_unknow=False, starting_line=1,
 
     data = [[type_fn(r) for r in row.split(sep)] for row in lines[starting_line:]]
     data = tensor_const(data)
-    #print (file,'data size', data.size())
     return data
 
 def create_parser():
@@ -168,8 +165,6 @@ def parse_args(parser):
     args.adapt = adapt
 
     args.learning_rate =random_param_value(args.learning_rate, args.learning_rate_min, args.learning_rate_max, type='logscale')
-    # args.adj_mat_time_window = random_param_value(args.adj_mat_time_window, args.adj_mat_time_window_min, args.adj_mat_time_window_max, type='int')
-    # args.num_hist_steps = random_param_value(args.num_hist_steps, args.num_hist_steps_min, args.num_hist_steps_max, type='int')
     args.gcn_parameters['feats_per_node'] =random_param_value(args.gcn_parameters['feats_per_node'], args.gcn_parameters['feats_per_node_min'], args.gcn_parameters['feats_per_node_max'], type='int')
     args.gcn_parameters['layer_1_feats'] =random_param_value(args.gcn_parameters['layer_1_feats'], args.gcn_parameters['layer_1_feats_min'], args.gcn_parameters['layer_1_feats_max'], type='int')
     if args.gcn_parameters['layer_2_feats_same_as_l1'] or args.gcn_parameters['layer_2_feats_same_as_l1'].lower()=='true':
@@ -183,4 +178,7 @@ def parse_args(parser):
         args.gcn_parameters['lstm_l2_feats'] =random_param_value(args.gcn_parameters['lstm_l2_feats'], args.gcn_parameters['lstm_l1_feats_min'], args.gcn_parameters['lstm_l1_feats_max'], type='int')
     args.gcn_parameters['cls_feats'] =random_param_value(args.gcn_parameters['cls_feats'], args.gcn_parameters['cls_feats_min'], args.gcn_parameters['cls_feats_max'], type='int')
 
+    print('feats_per_node:',args.gcn_parameters['feats_per_node'])
+    print('layer_1_feats',args.gcn_parameters['layer_1_feats'])
+    print('cls_feats',args.gcn_parameters['cls_feats'])
     return args
