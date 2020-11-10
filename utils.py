@@ -180,5 +180,7 @@ def parse_args(parser):
 
     print('feats_per_node:',args.gcn_parameters['feats_per_node'])
     print('layer_1_feats',args.gcn_parameters['layer_1_feats'])
+    print('layer_2_feats',args.gcn_parameters['layer_2_feats'])
     print('cls_feats',args.gcn_parameters['cls_feats'])
+
     return args
