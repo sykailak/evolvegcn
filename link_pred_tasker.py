@@ -107,6 +107,7 @@ class Link_Pred_Tasker():
             indexx = torch.LongTensor([row, col])
             tensor_size = torch.Size([self.data.num_nodes, self.feats_per_node])
             degs_out = torch.sparse.FloatTensor(indexx, torch.FloatTensor(values), tensor_size)
+
             hot_1 = {'idx': degs_out._indices().t(), 'vals': degs_out._values()}
 
             return hot_1

@@ -102,6 +102,7 @@ if __name__ == '__main__':
   parser = u.create_parser()
   args = u.parse_args(parser)
 
+
   global rank, wsize, use_cuda
   args.use_cuda = (torch.cuda.is_available() and args.use_cuda)
   args.device='cpu'
