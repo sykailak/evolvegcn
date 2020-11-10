@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c187b02-9b85-4d23-b555-e67791160b95" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/sbm_dl.py" beforeDir="false" afterPath="$PROJECT_DIR$/sbm_dl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link_pred_tasker.py" beforeDir="false" afterPath="$PROJECT_DIR$/link_pred_tasker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
