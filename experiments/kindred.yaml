@@ -1,8 +1,8 @@
 data: sbm50
 
 sbm50_args:
-  folder: /home/susuykim/data/
-  edges_file: tennis_1week_alladj.csv
+  #folder: /home/susuykim/data/
+  #edges_file: tennis_1week_alladj.csv
   #dict_file: tennis_dict.npy
   aggr_time: 1 #
   feats_per_node: 3 #

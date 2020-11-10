@@ -155,7 +155,7 @@ if __name__ == '__main__':
 
 
   print('####################################')
-  print('sport:',args.sbm50_args['dict_file'])
+  print('sport:',args.sport)
   print('adj_mat_time_window:',args.adj_mat_time_window)
   print('num_hist steps:',args.num_hist_steps)
   print(args.comment)

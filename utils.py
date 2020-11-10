@@ -128,6 +128,7 @@ def load_data_from_tar(file, tar_archive, replace_unknow=False, starting_line=1,
 def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--config_file',default='experiments/parameters_example.yaml', type=argparse.FileType(mode='r'), help='optional, yaml file containing parameters to be used, overrides command line parameters')
+    parser.add_argument('--edge_file', default='none', type=str)
     parser.add_argument('--sport', default='tennis', type=str)
     parser.add_argument('--adj_mat_time_window', default='1', type=int)
     parser.add_argument('--num_hist_steps', default='5', type=int)
@@ -145,6 +146,7 @@ def parse_args(parser):
     comment = args.comment
     adapt = args.adapt
     model = args.model
+    edge_file = args.edge_file
 
     if args.config_file:
         data = yaml.load(args.config_file)
@@ -154,10 +156,9 @@ def parse_args(parser):
         for key, value in data.items():
             arg_dict[key] = value
 
-    args.sbm50_args['edges_file'] = sport + '_1week_alladj.csv'
-    args.sbm50_args['dict_file'] = sport + '_dict.npy'
-
-
+    args.sbm50_args['edges_file'] = edge_file
+    #args.sbm50_args['dict_file'] = sport + '_dict.npy'
+    args.sport = sport
     args.adj_mat_time_window = adj_mat
     args.num_hist_steps = num_hist
     args.model = model
