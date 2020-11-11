@@ -85,6 +85,7 @@ class Trainer():
                     best_test = eval_test
 
                 if self.args.save_node_embeddings:
+                    print('save_node_embeddings')
                     self.save_node_embs_csv(nodes_embs, self.splitter.train_idx, log_file + '_train_nodeembs.csv.gz')
                     self.save_node_embs_csv(nodes_embs, self.splitter.dev_idx, log_file + '_valid_nodeembs.csv.gz')
                     self.save_node_embs_csv(nodes_embs, self.splitter.test_idx, log_file + '_test_nodeembs.csv.gz')
