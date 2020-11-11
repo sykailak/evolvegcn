@@ -86,9 +86,7 @@ class Trainer():
 
                 if self.args.save_node_embeddings:
                     print('save_node_embeddings')
-                    self.save_node_embs_csv(nodes_embs, self.splitter.train_idx, log_file + '_train_nodeembs.csv.gz')
-                    self.save_node_embs_csv(nodes_embs, self.splitter.dev_idx, log_file + '_valid_nodeembs.csv.gz')
-                    self.save_node_embs_csv(nodes_embs, self.splitter.test_idx, log_file + '_test_nodeembs.csv.gz')
+                    self.save_node_embs_csv(nodes_embs, self.args.sbm50_args['edges_file'] + '_nodeembs.csv.gz')
 
         print('Final test result:', best_test)
 
@@ -205,13 +203,7 @@ class Trainer():
         adj['vals'] = adj['vals'][0]
         return adj
 
-    def save_node_embs_csv(self, nodes_embs, indexes, file_name):
-        csv_node_embs = []
-        for node_id in indexes:
-            orig_ID = torch.DoubleTensor([self.tasker.data.contID_to_origID[node_id]])
-
-            csv_node_embs.append(torch.cat((orig_ID, nodes_embs[node_id].double())).detach().numpy())
-
-        pd.DataFrame(np.array(csv_node_embs)).to_csv(file_name, header=None, index=None, compression='gzip')
+    def save_node_embs_csv(self, nodes_embs, file_name):
+        pd.DataFrame(np.array(nodes_embs)).to_csv(file_name, header=None, index=None, compression='gzip')
         print ('Node embs saved in',file_name)
 

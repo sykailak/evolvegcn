@@ -17,7 +17,6 @@ class sbm_dataset():
         timesteps = u.aggregate_by_time(edges[:,self.ecols.TimeStep], args.sbm_args.aggr_time)
         self.max_time = timesteps.max()
         self.min_time = timesteps.min()
-        print ('TIME', self.max_time, self.min_time )
         edges[:,self.ecols.TimeStep] = timesteps
 
         edges[:,self.ecols.Weight] = self.cluster_negs_and_positives(edges[:,self.ecols.Weight])

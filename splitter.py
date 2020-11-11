@@ -25,15 +25,12 @@ class splitter():
                 perm_idx = torch.randperm(indexes.size(0))
                 perm_idx = indexes[perm_idx]
             else:
-                print ('tasker.data.nodes',indexes.size())
                 perm_idx, _ = indexes.sort()
-            #print ('perm_idx',perm_idx[:10])
-            
+
             self.train_idx = perm_idx[:int(args.train_proportion*perm_idx.size(0))]
             self.dev_idx = perm_idx[int(args.train_proportion*perm_idx.size(0)): int((args.train_proportion+args.dev_proportion)*perm_idx.size(0))]
             self.test_idx = perm_idx[int((args.train_proportion+args.dev_proportion)*perm_idx.size(0)):]
-            # print ('train,dev,test',self.train_idx.size(), self.dev_idx.size(), self.test_idx.size())
-            
+
             train = static_data_split(tasker, self.train_idx, test = False)
             train = DataLoader(train, shuffle=True,**args.data_loading_params)
             

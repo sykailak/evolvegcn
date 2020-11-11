@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9c187b02-9b85-4d23-b555-e67791160b95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sbm_50t_1000n_adj.csv.tar.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-set-up/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-set-up/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_exp.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_exp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sbm_dl.py" beforeDir="false" afterPath="$PROJECT_DIR$/sbm_dl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/splitter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

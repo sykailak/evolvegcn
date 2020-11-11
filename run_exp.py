@@ -140,13 +140,10 @@ if __name__ == '__main__':
   args = build_random_hyper_params(args)
 
   #build the dataset
-  print('build dataset')
   dataset = build_dataset(args)
   #build the tasker
-  print('build tasker')
   tasker = build_tasker(args,dataset)
   #build the splitter
-  print('build splitter')
   splitter = sp.splitter(args,tasker)
   #build the models
   gcn = build_gcn(args, tasker)
