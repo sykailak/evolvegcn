@@ -179,10 +179,5 @@ def parse_args(parser):
         args.gcn_parameters['lstm_l2_feats'] =random_param_value(args.gcn_parameters['lstm_l2_feats'], args.gcn_parameters['lstm_l1_feats_min'], args.gcn_parameters['lstm_l1_feats_max'], type='int')
     args.gcn_parameters['cls_feats'] =random_param_value(args.gcn_parameters['cls_feats'], args.gcn_parameters['cls_feats_min'], args.gcn_parameters['cls_feats_max'], type='int')
 
-    print('save node embeddings?',args.save_node_embeddings)
-    print('feats_per_node:',args.gcn_parameters['feats_per_node'])
-    print('layer_1_feats',args.gcn_parameters['layer_1_feats'])
-    print('layer_2_feats',args.gcn_parameters['layer_2_feats'])
-    print('cls_feats',args.gcn_parameters['cls_feats'])
 
     return args
