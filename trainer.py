@@ -84,10 +84,6 @@ class Trainer():
                 if eval_test > best_test:
                     best_test = eval_test
 
-                if self.args.save_node_embeddings:
-                    print('save_node_embeddings')
-                    self.save_node_embs_csv(nodes_embs, self.args.sbm50_args['edges_file'] + '_nodeembs.csv.gz')
-
         print('Final test result:', best_test)
 
     def run_epoch(self, split, epoch, set_name, grad):
@@ -202,8 +198,4 @@ class Trainer():
             adj['idx'] = adj['idx'][0]
         adj['vals'] = adj['vals'][0]
         return adj
-
-    def save_node_embs_csv(self, nodes_embs, file_name):
-        pd.DataFrame(np.array(nodes_embs)).to_csv(file_name, header=None, index=None, compression='gzip')
-        print ('Node embs saved in',file_name)
 

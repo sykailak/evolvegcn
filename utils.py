@@ -133,7 +133,6 @@ def create_parser():
     parser.add_argument('--adaptive', dest='adapt',action='store_true')
     parser.add_argument('--noadaptive', dest='adapt',action='store_false')
     parser.add_argument('--model', default='egcn_h', type=str)
-    parser.add_argument('--save_node_embeddings', dest='nodeemb', action='store_true')
 
     return parser
 
@@ -146,7 +145,6 @@ def parse_args(parser):
     adapt = args.adapt
     model = args.model
     edge_file = args.edge_file
-    save_node_embeddings = args.nodeemb
 
     if args.config_file:
         data = yaml.load(args.config_file)
@@ -166,7 +164,6 @@ def parse_args(parser):
         args.num_hist_steps = 0
     args.comment = comment
     args.adapt = adapt
-    args.save_node_embeddings = save_node_embeddings
 
     args.learning_rate =random_param_value(args.learning_rate, args.learning_rate_min, args.learning_rate_max, type='logscale')
     args.gcn_parameters['feats_per_node'] =random_param_value(args.gcn_parameters['feats_per_node'], args.gcn_parameters['feats_per_node_min'], args.gcn_parameters['feats_per_node_max'], type='int')
