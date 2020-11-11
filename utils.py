@@ -146,7 +146,7 @@ def parse_args(parser):
     adapt = args.adapt
     model = args.model
     edge_file = args.edge_file
-    save_node_embeddings = args.save_node_embeddings
+    save_node_embeddings = args.nodeemb
 
     if args.config_file:
         data = yaml.load(args.config_file)
