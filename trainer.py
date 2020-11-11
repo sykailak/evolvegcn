@@ -212,5 +212,5 @@ class Trainer():
             csv_node_embs.append(torch.cat((orig_ID, nodes_embs[node_id].double())).detach().numpy())
 
         pd.DataFrame(np.array(csv_node_embs)).to_csv(file_name, header=None, index=None, compression='gzip')
-    # print ('Node embs saved in',file_name)
+        print ('Node embs saved in',file_name)
 
