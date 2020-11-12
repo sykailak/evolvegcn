@@ -180,11 +180,14 @@ def get_non_existing_edges(adj, number, tot_nodes, smart_sampling, existing_node
     t0 = time.time()
 
     # distinguishing set of toNode and from Node
+    '''
     a = torch.unique(adj['idx'], dim=0)
     a_ = a.tolist()
     l = list(map(list, set(map(tuple, map(set, a_)))))
     idx = np.array(l).T.tolist()
     idx = np.array(idx)
+    '''
+    idx = adj['idx'].t().numpy() # delete if you want the above
 
     true_ids = get_edges_ids(idx, tot_nodes)
     true_ids = set(true_ids)
