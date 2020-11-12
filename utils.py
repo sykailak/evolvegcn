@@ -124,7 +124,7 @@ def load_data_from_tar(file, tar_archive, replace_unknow=False, starting_line=1,
 
 def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('--config_file',default='./experiments/kindred.yaml', type=argparse.FileType(mode='r'), help='optional, yaml file containing parameters to be used, overrides command line parameters')
+    parser.add_argument('--config_file',default='/home/susuykim/evolvegcn/experiments/kindred.yaml', type=argparse.FileType(mode='r'), help='optional, yaml file containing parameters to be used, overrides command line parameters')
     parser.add_argument('--edge_file', default='none', type=str)
     parser.add_argument('--sport', default='tennis', type=str)
     parser.add_argument('--adj_mat_time_window', default='1', type=int)
