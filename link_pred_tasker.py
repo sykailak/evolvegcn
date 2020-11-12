@@ -174,8 +174,7 @@ class Link_Pred_Tasker():
                                                           number=label_adj['vals'].size(0) * neg_mult,
                                                           tot_nodes=self.data.num_nodes,
                                                           smart_sampling=self.args.smart_neg_sampling,
-                                                          existing_nodes=existing_nodes,
-                                                          sport = self.args.sport)
+                                                          existing_nodes=existing_nodes)
 
 
         # For football data, we need to sample due to memory constraints
