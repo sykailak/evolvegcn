@@ -197,11 +197,11 @@ def get_non_existing_edges(adj, number, tot_nodes, smart_sampling, existing_node
             from_id = np.random.choice(idx[0], size=num_edges, replace=True)
             to_id = np.random.choice(existing_nodes, size=num_edges, replace=True)
 
-        if num_edges > 1:
-            edges = np.stack([from_id, to_id])
-        else:
-            edges = np.concatenate([from_id, to_id])
-        return edges
+            if num_edges > 1:
+                edges = np.stack([from_id, to_id])
+            else:
+                edges = np.concatenate([from_id, to_id])
+            return edges
     else:
         def sample_edges(num_edges):
             if num_edges > 1:
