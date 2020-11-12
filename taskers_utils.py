@@ -239,9 +239,6 @@ def get_non_existing_edges(adj, number, tot_nodes, smart_sampling, existing_node
 
 
 def get_edges_ids(sp_idx, tot_nodes):
-    # print(sp_idx)
-    # print(tot_nodes)
-    # print(sp_idx[0]*tot_nodes)
     return sp_idx[0] * tot_nodes + sp_idx[1]
 
 
