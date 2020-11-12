@@ -33,7 +33,7 @@ class Link_Pred_Tasker():
         self.prepare_node_feats = self.build_prepare_node_feats(args, dataset)
         self.is_static = False
 
-        file = os.path.join(args.sbm50_args['folder'], args.sbm50_args['dict_file'])
+        file = os.path.join('/home/susuykim/data', 'football_dict.npy')
         read_dictionary = np.load(file, allow_pickle='TRUE').item()
         self.all_node_feats_dic = read_dictionary
 
