@@ -25,9 +25,9 @@ except AttributeError:
     raise ValueError(
         f"This notebook requires StellarGraph version 1.2.1, but a different version {sg.__version__} is installed.  Please see <https://github.com/stellargraph/stellargraph/issues/1172>."
     ) from None
-	```
+```
 
-####Generate edge data from the betting data
+#### Generate edge data from the betting data
 
 Run the following on the console.
 
@@ -47,7 +47,7 @@ The generated edge data has information of edges, with corresponding timestamps.
 -	weight: ‘1’ denotes there exists an edge. 
 -	time: the corresponding timestamp where the edge exists
 
-####Run EvolveGCN
+#### Run EvolveGCN
 I have came up with the best hyperparameters for each sport. Run the following in the console:
 
 For football
